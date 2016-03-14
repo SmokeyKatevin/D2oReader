@@ -1,9 +1,6 @@
 # D2oReader
 C# console app to unpack Dofus .d2o files
 
-Based on Yann Guineau's scripts. 
-https://github.com/LuaxY/ 
-
  Authors
  -------
  
