@@ -13,14 +13,14 @@ namespace D2oReader
             set { reader.BaseStream.Position = value; }
         }
 
-        public UInt32 BytesAvailable
+        public uint BytesAvailable
         {
             get { return (UInt32) (reader.BaseStream.Length - reader.BaseStream.Position); }
         }
 
-        public UInt32 ReadUInt()
+        public uint ReadUInt()
         {
-            Byte[] uint32 = reader.ReadBytes(4);
+            byte[] uint32 = reader.ReadBytes(4);
 
             uint32 = uint32.Reverse().ToArray();
 
@@ -32,19 +32,35 @@ namespace D2oReader
             return reader.ReadBytes(v);
         }
 
-        public Int32 ReadInt()
+        public int ReadInt()
         {
-            Byte[] int32 = reader.ReadBytes(4);
+            byte[] int32 = reader.ReadBytes(4);
 
             int32 = int32.Reverse().ToArray();
 
             return BitConverter.ToInt32(int32, 0);
         }
+        public double ReadDouble()
+        {
+            byte[] @double = reader.ReadBytes(8);
+
+            @double = @double.Reverse().ToArray();
+
+            return BitConverter.ToDouble(@double, 0);
+        }
+        public float ReadFloat()
+        {
+            byte[] @float = reader.ReadBytes(4);
+
+            @float = @float.Reverse().ToArray();
+
+            return BitConverter.ToSingle(@float, 0);
+        }
         
 
         public short ReadShort()
         {
-            Byte[] shortVar = reader.ReadBytes(2);
+            byte[] shortVar = reader.ReadBytes(2);
 
             shortVar = shortVar.Reverse().ToArray();
 
@@ -52,7 +68,7 @@ namespace D2oReader
         }
         public ushort ReadUShort()
         {
-            Byte[] ushortVar = reader.ReadBytes(2);
+            byte[] ushortVar = reader.ReadBytes(2);
 
             ushortVar = ushortVar.Reverse().ToArray();
 
@@ -73,13 +89,13 @@ namespace D2oReader
 
         public string ReadAscii(Int32 bytesAmount)
         {
-            Byte[] buffer = reader.ReadBytes(bytesAmount);
+            byte[] buffer = reader.ReadBytes(bytesAmount);
 
             return Encoding.ASCII.GetString(buffer);
         }
         public string ReadUtf8()
         {
-            Byte[] buffer;
+            byte[] buffer;
 
             ushort len = ReadUShort();
 

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -117,9 +118,7 @@ namespace D2oReader
             StringBuilder fieldBuilder = new StringBuilder();
 
             fieldBuilder
-                .Append("\"")
-                .Append(field.fieldName)
-                .Append("\"")
+                .Append(JsonConvert.ToString(field.fieldName))
                 .Append(": ")
                 .Append(getFieldValueBuilder(field));
 
@@ -154,12 +153,14 @@ namespace D2oReader
                     fieldValueBuilder.Append(reader.ReadInt());
                     break;
                 case GameDataTypeEnum.String:
-                    fieldValueBuilder.Append(reader.ReadUtf8());
+                    fieldValueBuilder.Append(JsonConvert.ToString(reader.ReadUtf8()));
                     break;
                 case GameDataTypeEnum.Bool:
-                    fieldValueBuilder.Append(reader.ReadBool().ToString().ToLower()); //in json bool is true/false not True/False
+                    fieldValueBuilder.Append(JsonConvert.ToString(reader.ReadBool())); //in json bool is true/false not True/False
                     break;
-                    //TODO: implement Double
+                case GameDataTypeEnum.Double:
+                    fieldValueBuilder.Append(JsonConvert.ToString(reader.ReadDouble())); //handling the "," vs "." problem of the culture specifics
+                    break;
                 default:
                     if (field.fieldType > 0) //if type is an object
                     {

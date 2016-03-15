@@ -9,7 +9,7 @@ namespace D2oReader
         {
             try
             {
-                string d2oFilePath = @"C:\Dofus\app\data\common\SubAreas.d2o";
+                string d2oFilePath = @"C:\Dofus\app\data\common\Items.d2o";
                 new App(d2oFilePath);
 
                 if (Debugger.IsAttached)

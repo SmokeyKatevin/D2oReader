@@ -29,8 +29,8 @@ namespace D2oReader
                     throw new InvalidDataException("Header doesn't equal the string 'D2O' : Corrupted file");
                 }
 
-                readIndexTable();
-                //printIndexTable();
+                readObjectPointerTable();
+                printObjectPointerTable();
                 readClassTable();
                 printClassTable();
                 readGameDataProcessor(); //TODO: implement
@@ -226,7 +226,7 @@ namespace D2oReader
             }
         }
 
-        private void readIndexTable()
+        private void readObjectPointerTable()
         {
             int headerOffset = reader.ReadInt();
             reader.Pointer = headerOffset;
