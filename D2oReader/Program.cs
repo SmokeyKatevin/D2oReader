@@ -9,13 +9,19 @@ namespace D2oReader
         {
             try
             {
-                string d2oFilePath = @"C:\Dofus\app\data\common\Titles.d2o";
-                new App(d2oFilePath);
+                string d2oFilePath;
 
-                if (Debugger.IsAttached)
+                if (args != null)
                 {
-                    Console.WriteLine("Press any key to continue . . .");
-                    Console.ReadKey();
+                    d2oFilePath = args[0];
+
+                    new App(d2oFilePath);
+
+                    if (Debugger.IsAttached)
+                    {
+                        Console.WriteLine("Press any key to continue . . .");
+                        Console.ReadKey();
+                    }
                 }
             }
             catch (Exception ex)
