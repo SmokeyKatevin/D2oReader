@@ -107,12 +107,12 @@ namespace D2oReader
             {
                 Console.WriteLine("Printing {0} class tables.", classDefinitions.Count);
                 Console.WriteLine();
-                foreach (var @class in classDefinitions)
+                foreach (var classDefinition in classDefinitions)
                 {
-                    Console.WriteLine("Class id:{0} - name {1}",@class.Key,@class.Value.Name);
+                    Console.WriteLine("Class id:{0} - name {1}",classDefinition.Key,classDefinition.Value.Name);
                     Console.WriteLine();
 
-                    foreach (GameDataField field in @class.Value.Fields)
+                    foreach (GameDataField field in classDefinition.Value.Fields)
                     {
                         printField(getFieldString(field));
                     }
