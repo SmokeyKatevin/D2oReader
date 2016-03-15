@@ -35,15 +35,21 @@ namespace D2oReader
                 printClassTable();
                 readGameDataProcessor(); //TODO: implement
                 unpackObjectsAsJson();
+                writeJsonFile(false);
                 //printAllObjects(); //call after  unpackObjectsAsJson(); 
                 searchObjectById(); //call after  unpackObjectsAsJson(); 
-                //writeJsonFile(); //TODO: implement
+
+
             }
         }
 
-        private void writeJsonFile()
+        private void writeJsonFile(bool shouldWrite)
         {
-            throw new NotImplementedException();
+            if (shouldWrite)
+            {
+                unpacker.WriteIndentedJson();
+                //unpacker.WriteJson();
+            }
         }
 
         private void printAllObjects()
@@ -59,13 +65,11 @@ namespace D2oReader
 
         private void unpackObjectsAsJson()
         {
-            bool isValidJson;
-
             unpacker = new JsonUnpacker(reader,
                 objectPointerTable,
                 classDefinitions);
 
-            isValidJson = unpacker.Unpack();
+            unpacker.Unpack();
         }
 
         private int getClassId(int objectId)

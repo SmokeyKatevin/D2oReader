@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -25,11 +25,31 @@ namespace D2oReader
             jsonBuilder = new StringBuilder();
         }
 
-        public bool Unpack()
+        public void Unpack()
         {
             buildJsonString();
+        }
 
-            return isValidJson();
+        public void WriteIndentedJson()
+        {
+            if (IsValidJson)
+            {
+                using (TextWriter writer = new StreamWriter(@"C:\Dofus\app\data\common\test.json"))
+                {
+                    writer.Write(unpackedJson.ToString(Formatting.Indented));
+                }
+            }
+        }
+
+        public void WriteJson()
+        {
+            if (IsValidJson)
+            {
+                using (TextWriter writer = new StreamWriter(@"C:\Dofus\app\data\common\test.json"))
+                {
+                    writer.Write(unpackedJson.ToString(Formatting.None));
+                }
+            }
         }
 
         private void buildJsonString()
@@ -39,19 +59,23 @@ namespace D2oReader
             addArrayCloseBracket();
         }
 
-        private bool isValidJson()
+        public bool IsValidJson
         {
-            try
+            get
             {
-                unpackedJson = JToken.Parse(jsonBuilder.ToString());
-                return true;
+                try
+                {
+                    unpackedJson = JToken.Parse(jsonBuilder.ToString());
+                    return true;
+                }
+                catch (JsonReaderException exception)
+                {
+                    Console.WriteLine("Json output is invalid:");
+                    Console.WriteLine(exception.Message);
+                    return false;
+                }
             }
-            catch (JsonReaderException exception)
-            {
-                Console.WriteLine("Json output is invalid:");
-                Console.WriteLine(exception.Message);
-                return false;
-            }
+            
         }
 
         private void addObjects()
