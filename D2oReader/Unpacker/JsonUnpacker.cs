@@ -34,7 +34,7 @@ namespace D2oReader
         {
             if (IsValidJson)
             {
-                using (TextWriter writer = new StreamWriter(@"C:\Dofus\app\data\common\test.json"))
+                using (TextWriter writer = new StreamWriter(@".\output\output.json"))
                 {
                     writer.Write(unpackedJson.ToString(Formatting.Indented));
                 }
@@ -45,7 +45,7 @@ namespace D2oReader
         {
             if (IsValidJson)
             {
-                using (TextWriter writer = new StreamWriter(@"C:\Dofus\app\data\common\test.json"))
+                using (TextWriter writer = new StreamWriter(@".\output.json"))
                 {
                     writer.Write(unpackedJson.ToString(Formatting.None));
                 }

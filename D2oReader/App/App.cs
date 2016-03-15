@@ -13,6 +13,7 @@ namespace D2oReader
         JsonUnpacker unpacker;
         Dictionary<int, int> objectPointerTable;
         Dictionary<int, GameDataClassDefinition> classDefinitions;
+        int contentOffset = 0; //or uint?
 
         public App(string d2oFilePath)
         {
@@ -26,16 +27,27 @@ namespace D2oReader
 
                 if (!headerString.Equals("D2O"))
                 {
-                    throw new InvalidDataException("Header doesn't equal the string 'D2O' : Corrupted file");
+                    reader.Pointer = 0;
+                    string headers = reader.ReadUtf8();
+                    short formatVersion = reader.ReadShort();
+                    int len = reader.ReadInt();
+                    reader.Pointer = reader.Pointer + len;
+                    contentOffset = reader.Pointer;
+                    int streamStartIndex = (contentOffset + 7); //or uint?
+                    headers = reader.ReadAscii(3);
+                    if (!headers.Equals("D2O"))
+                    {
+                        throw new InvalidDataException("Header doesn't equal the string 'D2O' : Corrupted file");
+                    }
                 }
 
                 readObjectPointerTable();
-                printObjectPointerTable();
+                //printObjectPointerTable();
                 readClassTable();
                 printClassTable();
                 readGameDataProcessor(); //TODO: implement
                 unpackObjectsAsJson();
-                writeJsonFile(false);
+                writeJsonFile(true);
                 //printAllObjects(); //call after  unpackObjectsAsJson(); 
                 searchObjectById(); //call after  unpackObjectsAsJson(); 
 
@@ -232,8 +244,8 @@ namespace D2oReader
 
         private void readObjectPointerTable()
         {
-            int headerOffset = reader.ReadInt();
-            reader.Pointer = headerOffset;
+            int tablePointer = reader.ReadInt();
+            reader.Pointer =  tablePointer + contentOffset;
 
             int objectPointerTableLen = reader.ReadInt();
 
@@ -245,7 +257,7 @@ namespace D2oReader
                 key = reader.ReadInt();
                 pointer = reader.ReadInt();
 
-                objectPointerTable.Add(key, pointer);
+                objectPointerTable.Add(key, pointer + contentOffset);
             }
         }
     }

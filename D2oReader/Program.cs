@@ -9,10 +9,14 @@ namespace D2oReader
         {
             try
             {
-                string d2oFilePath;
+                #if DEBUG
+                    args = new[] { @"C:\Dofus\app\data\common\Areas.d2o" };
+                #endif
 
                 if (args != null)
                 {
+                    string d2oFilePath;
+
                     d2oFilePath = args[0];
 
                     new App(d2oFilePath);
